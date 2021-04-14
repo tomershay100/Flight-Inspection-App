@@ -8,10 +8,10 @@
 
 This is a desktop application for flight anomalies detections.
 1. [General](#General)  
- - [Background](#background)
- - [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
- - [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
- - [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
+ 1. [Background](#background)
+ 2. [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
+ 3. [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
+ 4. [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
 2. [Dependencies](#dependencies)  
 3. [Installation](#installation)
 
@@ -63,7 +63,7 @@ You can see more information about the class hierarchy in [UML](https://github.c
 
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
-2. .NET 5.0
+2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
 3. [Oxyplot](https://www.nuget.org/packages/OxyPlot.Wpf/2.1.0-Preview1)
 4. [CircularGauge](https://www.nuget.org/packages/CircularGauge)
 
