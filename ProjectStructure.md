@@ -6,12 +6,22 @@ The structure of the application is based on the MVVM Design Pattern which divid
 This class uses a XMAL file which defines the application design. It includes several buttons for uploading files and UserControls such as Media Controls, Sliders, Indicators, Joysticks, etc. This class is the View which is responsible for displaying the main Tab in the app and therefore does nothing but update the ViewModel on changes that have come from the user (like button clicks). For this purpose, the class contains ViewModel. Like updating the ViewModel in the user actions, the class is responsible for displaying the information to the user and therefore receives PropertyChanged notifications from the ViewModel so that it can update the data values as soon as they change.
 #### GraphsUC:
 This class is a UserControl which is responsible for displaying the Graph Tab, which has 4 graphs, a list of the flight features, a button for uploading a DLL file, and a list of anomalies.
+
+![Graphs](https://i.imgur.com/ThG6gsF.png)
+![Graphs](https://i.imgur.com/NYXzN35.png)
 #### MediaControls:
 This class is a UserControl which responsible for displaying the playback and handle events of click on button such as: stop, play, back etc. For more description about media controls features you can see [here at playback](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features).
+
+![Playback](https://i.imgur.com/GinKPMK.png)
 #### Gauges:
 This class is a UserControl which responsible for displaying gauges of the features **YAW, ROLL, and PITCH**. It uses the CircularGauge package and using binding in order to display the current value of every fearture.
+
+![Gueges](https://i.imgur.com/8hLHtDs.png)
 #### Joystick:
 This class is a UserControl which responsible for displaying the joystick. The joystick moves according to the **Aileron and Elevator** values at this moment.
+
+![Joystick](https://i.imgur.com/7TbFsVa.png)
+![Joystick](https://i.imgur.com/v5NGTWj.png)
 
 ## View Model
 #### ViewModel:
