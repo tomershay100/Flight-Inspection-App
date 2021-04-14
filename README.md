@@ -7,11 +7,11 @@
 * Amit Sharabi
 
 This is a desktop application for flight anomalies detections.
-1. [General](#General)  
- 1. [Background](#background)
- 2. [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
- 3. [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
- 4. [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
+1. [General](#General)
+  1. [Background](#background)
+  2. [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
+  3. [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
+  4. [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
 2. [Dependencies](#dependencies)  
 3. [Installation](#installation)
 
@@ -22,7 +22,7 @@ The flight data includes the steering mode, speed, direction etc, and are record
 Tha app plays the data like a movie, graphiclly showing the plane relative to the earth (on FlightGear), the ruuder status and additional filght data in a number different views, including a view designed to find anomalies in the data.
 
 ### Project Description
-This project inerfaces with the FlightGear simulator (instruction for download at [Dependencies](#dependencies)) and they (?) work side-by-side. The idea is that the user will upload a normal flight file as _train file_. The program will learn it and now the user can upload any flight file (as _test file_) according to the _train file_. Any _test file_ the program will represent as a movie - there is a playback that the user can control by pressing the buttons and slider. Furthermore, there is a presentation of some important flight data as **yaw, pitch, airspeed** etc, and some graphs that represent the flight data of a specific featre from the beggining to the current time of the simulation.
+This project inerfaces with the FlightGear simulator (instruction for download at [Dependencies](#dependencies)) and they (?) work side-by-side. The idea is that the user will upload a normal flight file as _train file_. The program will learn it and now the user can upload any flight file (as _test file_) according to the _train file_. Any _test file_ the program will represent as a movie - there is a playback that the user can control by pressing the buttons and slider. Furthermore, there is a presentation of some important flight data as **yaw, pitch, airspeed** etc, and some graphs that represent the flight data of a specific featre from the beggining to the current time of the simulation. 
 
 ### Project Stucture
 This project designed according to MVVM architecture. The classes can be divided into two groups in order to create total segregation between the pressentation logic and the business logic.
@@ -61,6 +61,8 @@ You can see more information about the class hierarchy in [UML](https://github.c
   - Slider:         Enable the user to jump forwards and backward.
 * **Upload Several Test Files:** The user can upload as many test files as he wishes. The last flight will stop and the next will start.
 
+For more features explanations, you can watch [this video](https://youtu.be/t_-Bs4jf07Y).
+
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
 2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
@@ -72,8 +74,16 @@ You can see more information about the class hierarchy in [UML](https://github.c
     ```
     $ git clone https://github.com/tomershay100/Flight-Inspection-App.git
     ```
-2. Run the program from command line: 
+2. Open FlightGear from command line:
      ```
     $ cd _pathTo Flight-Inspection-App_
-    $ start bin\DesktopApp
     ```
+3. Click _fly_ on FlightGear.
+
+4. Run the program from command line: 
+     ```
+    $ cd Flight-Inspection-App
+    $ cd bin
+    $ start DesktopApp.exe
+    ```
+Notice it make take a while.
