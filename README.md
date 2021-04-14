@@ -1,6 +1,6 @@
 # Flight-Inspection-App
 
-##### Contributes
+#### Contributes
 * Roei Gida
 * Shilat Givati
 * Tomer Shay
@@ -8,8 +8,10 @@
 
 This is a desktop application for flight anomalies detections.
 1. [General](#General)  
-* [Background](#background)
-* [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
+  * [Background](#background)
+  * [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
+  * [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
+  * [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
 2. [Dependencies](#dependencies)  
 3. [Installation](#installation)
 
