@@ -16,4 +16,4 @@ This is a desktop application for flight anomalies detections.
 ## Dependencies
 
 ## Installation
-https://docs.google.com/viewer?url=https://raw.githubusercontent.com/degoes-consulting/lambdaconf-2015/master/speakers/jdegoes/intro-purescript/presentation.pdf
+https://docs.google.com/viewer?url=https://github.com/tomershay100/Flight-Inspection-App/blob/main/UML%20Diagram.pdf
