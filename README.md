@@ -67,13 +67,13 @@ For more features explanations, you can watch [this video](https://youtu.be/t_-B
 You can create annomly detection DLL according to the following API:
 * The DLLs' namespace must have the same name as the DLLs' name.
 * The Object that in charges of the anomalies must be called AnomalyManager and its class must contain the following functions:
- ```c
- public AnomalyManager()
- public void Learn()
- public void Detect()
- public void UploadTrain(string file)
- public void UploadTest(string file)
- public PlotModel GetShape(string _currColumn, string _Correlated_column)
+ ```c#
+ public AnomalyManager(); // Constructor to AnomalyManager.
+ public void UploadTrain(string file); // Uploads the normal flight.
+ public void UploadTest(string file); // Uploads the test flight.
+ public void Learn(); // Learns the normal flight.
+ public void Detect(); // Detect anomalies from the test flight.
+ public PlotModel GetShape(string _currColumn, string _Correlated_column); // Returns a PlotModel that emphasizes the anomalies points in a relation to your detection algorithm.
  ```
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
