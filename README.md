@@ -1,2 +1,18 @@
 # Flight-Inspection-App
-Desktop application for detecting flight anomalies
+
+### created by:
+* Roei Gida
+* Shilat Givati
+* Tomer Shay
+* Amit Sharabi
+
+This is a desktop application for flight anomalies detections.
+1. [General](#General)  
+2. [Dependencies](#dependencies)  
+3. [Installation](#installation)
+
+## General
+
+## Dependencies
+
+## Installation
