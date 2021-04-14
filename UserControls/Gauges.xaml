@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="DesktopApp.UserControls.Gauges"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DesktopApp.UserControls" xmlns:gauge="clr-namespace:CircularGauge;assembly=CircularGauge"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="460">
+    <Grid  Height="500" Width="460" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="0.517,0.09">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="182*" />
+            <ColumnDefinition Width="193*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <gauge:CircularGaugeControl x:Name="myGauge1" Grid.Column="1" Grid.Row="1"
+                Radius="80"
+                ScaleRadius="55"
+                ScaleStartAngle="120"
+                ScaleSweepAngle="300"
+                PointerLength="38"
+                PointerCapRadius="30"
+                MinValue="0"
+                MaxValue="360"
+                MajorDivisionsCount="10"
+                MinorDivisionsCount="5"
+                CurrentValue="{Binding VM_Yaw}"
+                RangeIndicatorThickness="0"
+                RangeIndicatorRadius="0"
+                RangeIndicatorLightOffset="80"
+                ScaleLabelRadius="40"
+                ScaleLabelSize="35,12"
+                ScaleLabelFontSize="10"
+                ScaleLabelForeground="Black"
+                MajorTickSize="9,2"
+                MinorTickSize="3,1"
+                MajorTickColor="Black"
+                MinorTickColor="Black"
+                GaugeBackgroundColor ="#AAC9CE"
+                PointerThickness ="13"
+                DialTextOffset="50"
+                DialText="YAW"
+                DialTextColor="Black" Margin="0,6,0,160" Grid.RowSpan="2">
+        </gauge:CircularGaugeControl>
+
+        <gauge:CircularGaugeControl x:Name="myGauge2" Grid.Column="0" Grid.Row="1"
+                Radius="80"
+                ScaleRadius="55"
+                ScaleStartAngle="120"
+                ScaleSweepAngle="300"
+                PointerLength="38"
+                PointerCapRadius="30"
+                MinValue="0"
+                MaxValue="360"
+                MajorDivisionsCount="10"
+                MinorDivisionsCount="5"
+                CurrentValue="{Binding VM_Roll}"
+                RangeIndicatorThickness="0"
+                RangeIndicatorRadius="0"
+                RangeIndicatorLightOffset="80"
+                ScaleLabelRadius="45"
+                ScaleLabelSize="35,12"
+                ScaleLabelFontSize="10"
+                ScaleLabelForeground="Black"
+                MajorTickSize="9,2"
+                MinorTickSize="3,1"
+                MajorTickColor="Black"
+                MinorTickColor="Black"
+                GaugeBackgroundColor ="#AAC9CE"
+                PointerThickness ="16"
+                DialTextOffset="50"
+                DialText="ROLL"
+                DialTextColor="Black" Margin="0,6,0,161" Grid.RowSpan="2">
+        </gauge:CircularGaugeControl>
+
+        <gauge:CircularGaugeControl x:Name="myGauge3" Grid.Column="0" Grid.Row="1"
+                Radius="80"
+                ScaleRadius="55"
+                ScaleStartAngle="120"
+                ScaleSweepAngle="300"
+                PointerLength="38"
+                PointerCapRadius="30"
+                MinValue="0"
+                MaxValue="360"
+                MajorDivisionsCount="10"
+                MinorDivisionsCount="5"
+                CurrentValue="{Binding VM_Pitch}"
+                RangeIndicatorThickness="0"
+                RangeIndicatorRadius="0"
+                RangeIndicatorLightOffset="80"
+                ScaleLabelRadius="45"
+                ScaleLabelSize="35,12"
+                ScaleLabelFontSize="10"
+                ScaleLabelForeground="Black"
+                MajorTickSize="9,2"
+                MinorTickSize="3,1"
+                MajorTickColor="Black"
+                MinorTickColor="Black"
+                GaugeBackgroundColor ="#AAC9CE"
+                PointerThickness ="16"
+                DialTextOffset="50"
+                DialText="PITCH"
+                DialTextColor="Black" Margin="92,158,101,8" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        </gauge:CircularGaugeControl>
+
+        <Canvas Grid.Column="1" Margin="0,-12,0,12">
+            <Image Source="pack://application:,,,/Resources/cloud.png" Height="135" Canvas.Left="40" Width="142" Canvas.Top="2"/>
+            <Label x:Name ="directionLable" Content="Direction" FontWeight="Bold" FontSize="16" Canvas.Left="70" Canvas.Top="78" Height="29" Width="81"/>
+            <TextBlock Canvas.Left="78" FontSize="14" Canvas.Top="61" Text="{Binding VM_Direction}" TextAlignment="Center" TextWrapping="Wrap" Width="64" Background="Transparent" Height="26"/>
+            <Image Source="pack://application:,,,/Resources/cloud.png" Height="134" Canvas.Left="-180" Width="142" Canvas.Top="2"/>
+            <Label x:Name ="alimeterLable" Content="Alimeter" FontWeight="Bold" FontSize="16" Canvas.Left="-150" Canvas.Top="78" Height="28" Width="81"/>
+            <TextBlock Canvas.Left="-142" FontSize="14" Canvas.Top="61" Text="{Binding VM_Alimeter}" TextAlignment="Center" TextWrapping="Wrap" Width="64" Background="Transparent" Height="26"/>
+            <Image Source="pack://application:,,,/Resources/cloud.png" Height="135" Canvas.Left="-66" Canvas.Top="71" Width="142"/>
+            <Label x:Name ="airSpeedLable" Content="Air Speed" FontWeight="Bold" FontSize="16" Canvas.Left="-36" Canvas.Top="147" Height="29" Width="81"/>
+            <TextBlock Canvas.Left="-28" FontSize="14" Canvas.Top="130" Text="{Binding VM_AirSpeed}" TextAlignment="Center" TextWrapping="Wrap" Width="64" Background="Transparent" Height="26"/>
+        </Canvas>
+    </Grid>
+</UserControl>
