@@ -9,7 +9,7 @@
 This is a desktop application for flight anomalies detections.
 1. [General](#General)  
 * [Background](#background)
-* [Project Description](#project Description)
+* [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
 2. [Dependencies](#dependencies)  
 3. [Installation](#installation)
 
