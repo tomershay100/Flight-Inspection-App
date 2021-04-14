@@ -17,6 +17,7 @@ This class is a UserControl which responsible for displaying the playback and ha
 This class is a UserControl which responsible for displaying gauges of the features **YAW, ROLL, and PITCH**. It uses the CircularGauge package and using binding in order to display the current value of every fearture.
 
 ![Gueges](https://i.imgur.com/8hLHtDs.png)
+![Gueges](https://i.imgur.com/RP0X1Fw.png)
 #### Joystick:
 This class is a UserControl which responsible for displaying the joystick. The joystick moves according to the **Aileron and Elevator** values at this moment.
 
