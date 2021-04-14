@@ -16,4 +16,4 @@ This is a desktop application for flight anomalies detections.
 ## Dependencies
 
 ## Installation
-[UML diagram]https://github.com/tomershay100/Flight-Inspection-App/blob/main/UML%20Diagram.pdf
+[UML diagram](https://github.com/tomershay100/Flight-Inspection-App/blob/main/UML%20Diagram.pdf)
