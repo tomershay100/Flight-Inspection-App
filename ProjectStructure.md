@@ -7,7 +7,6 @@ This class uses a XMAL file which defines the application design. It includes se
 #### GraphsUC:
 This class is a UserControl which is responsible for displaying the Graph Tab, which has 4 graphs, a list of the flight features, a button for uploading a DLL file, and a list of anomalies.
 
-![Graphs](https://i.imgur.com/ThG6gsF.png)
 ![Graphs](https://i.imgur.com/NYXzN35.png)
 #### MediaControls:
 This class is a UserControl which responsible for displaying the playback and handle events of click on button such as: stop, play, back etc. For more description about media controls features you can see [here at playback](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features).
@@ -16,12 +15,10 @@ This class is a UserControl which responsible for displaying the playback and ha
 #### Gauges:
 This class is a UserControl which responsible for displaying gauges of the features **YAW, ROLL, and PITCH**. It uses the CircularGauge package and using binding in order to display the current value of every fearture.
 
-![Gueges](https://i.imgur.com/8hLHtDs.png)
 ![Gueges](https://i.imgur.com/RP0X1Fw.png)
 #### Joystick:
 This class is a UserControl which responsible for displaying the joystick. The joystick moves according to the **Aileron and Elevator** values at this moment.
 
-![Joystick](https://i.imgur.com/7TbFsVa.png)
 ![Joystick](https://i.imgur.com/v5NGTWj.png)
 
 ## View Model
