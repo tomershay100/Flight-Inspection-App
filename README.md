@@ -63,6 +63,18 @@ You can see more information about the class hierarchy in [UML](https://github.c
 
 For more features explanations, you can watch [this video](https://youtu.be/t_-Bs4jf07Y).
 
+### Create DLL
+You can create annomly detection DLL according to the following API:
+* The DLLs' namespace must have the same name as the DLLs' name.
+* The Object that in charges of the anomalies must be called AnomalyManager and its class must contain the following functions:
+ ```c
+ public AnomalyManager()
+ public void Learn()
+ public void Detect()
+ public void UploadTrain(string file)
+ public void UploadTest(string file)
+ public PlotModel GetShape(string _currColumn, string _Correlated_column)
+ ```
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
 2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
