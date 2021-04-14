@@ -81,25 +81,25 @@ You can create annomly detection DLL according to the following API:
 3. [Oxyplot](https://www.nuget.org/packages/OxyPlot.Wpf/2.1.0-Preview1)
 4. [CircularGauge](https://www.nuget.org/packages/CircularGauge)
 
-## Installation
-1. Clone the repository:  
-    ```
-    $ git clone https://github.com/tomershay100/Flight-Inspection-App.git
-    ```
-2. Open FlightGear from command line:
+## Installation 
+1. Open FlightGear from command line:
      ```
     $ cd C:\Program Files\FlightGear 2020.3.6
     $ cd bin
     $ start fgfs.exe --generic=socket,in,10,127.0.0.1,5400,tcp,playback_small --fdm=null
     ```
     Notice that ```C:\Program Files\FlightGear 2020.3.6``` is the path to the place where you download the FlightGear.
-    
-3. Click _fly_ on FlightGear.
 
-4. Run the program from **another** command line: 
+2. Click _fly_ on FlightGear.
+    
+3. Clone the repository from **another** command line:  
+    ```
+    $ git clone https://github.com/tomershay100/Flight-Inspection-App.git
+    ```
+4. Run the program: 
      ```
     $ cd Flight-Inspection-App
     $ cd bin
     $ start DesktopApp.exe
     ```
-Notice it make take a while.
+Notice it may take a while.
