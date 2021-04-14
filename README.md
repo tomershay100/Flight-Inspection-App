@@ -76,11 +76,15 @@ For more features explanations, you can watch [this video](https://youtu.be/t_-B
     ```
 2. Open FlightGear from command line:
      ```
-    $ cd _pathTo Flight-Inspection-App_
+    $ cd _FlightGear folder path__
+    $ cd bin
+    $ start fgfs.exe --generic=socket,in,10,127.0.0.1,5400,tcp,playback_small --fdm=null
     ```
+    FlightGear folder path is the path to the place where you download the FlightGear, Usually on ```C:\Program Files\FlightGear 2020.3.6```
+    
 3. Click _fly_ on FlightGear.
 
-4. Run the program from command line: 
+4. Run the program from **another** command line: 
      ```
     $ cd Flight-Inspection-App
     $ cd bin
