@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DesktopApp
 {
     //TimeSeries class
     public class TimeSeries
     {
-        private Dictionary<string, List<float>> csvMap; //the dictionary
-        private int _columnsSize;
-        private int _rowsSize;
-        List<string> featuresList;
+        private readonly Dictionary<string, List<float>> _csvMap; //the dictionary
+        private readonly int _columnsSize;
+        private readonly int _rowsSize;
+        private readonly List<string> _featuresList;
 
         //Constructor. Processes the CSV file into a dictionary.
         public TimeSeries(string file)
         {
-            featuresList = new List<string>();
-            csvMap = new Dictionary<string, List<float>>();
+            _featuresList = new List<string>();
+            _csvMap = new Dictionary<string, List<float>>();
 
-            string[] lines = file.Split('\n');
+            var lines = file.Split('\n');
 
             for (var index = 0; index < lines.Length; index++)
             {
@@ -25,15 +26,15 @@ namespace DesktopApp
             }
 
             _rowsSize = lines.Length - 2;
-            int lineIndex = 0;
-            string line = lines[lineIndex];
+            var lineIndex = 0;
+            var line = lines[lineIndex];
             _columnsSize = 0;
-            string temp = "";
-            foreach (char ch in line)
+            var temp = "";
+            foreach (var ch in line)
             {
                 if (ch == ',')
                 {
-                    featuresList.Add(temp);
+                    _featuresList.Add(temp);
                     _columnsSize++;
                     temp = "";
                 }
@@ -43,58 +44,57 @@ namespace DesktopApp
                 }
             }
 
-            featuresList.Add(temp);
+            _featuresList.Add(temp);
             _columnsSize++;
 
-            line = lines[lineIndex++]; // features
+            lineIndex++; // features
 
-            for (int j = 0; j < _columnsSize; j++)
+            for (var j = 0; j < _columnsSize; j++)
             {
-                string key = featuresList[j];
-                csvMap[key] = new List<float>();
+                var key = _featuresList[j];
+                _csvMap[key] = new List<float>();
             }
-            
-            for (int i = 0; i < _rowsSize; i++)
+
+            for (var i = 0; i < _rowsSize; i++)
             {
                 line = lines[lineIndex++];
-                string[] stringValues = line.Split(',');
-                List<float> floatValues = new List<float>();
-                foreach (string str in stringValues)
-                {
-                    floatValues.Add(float.Parse(str));
-                }
+                var stringValues = line.Split(',');
+                var floatValues = stringValues.Select(float.Parse).ToList();
 
-                for (int j = 0; j < _columnsSize; j++)
+                for (var j = 0; j < _columnsSize; j++)
                 {
-                    string key = featuresList[j];
-                    csvMap[key].Add(floatValues[j]);
+                    var key = _featuresList[j];
+                    _csvMap[key].Add(floatValues[j]);
                 }
 
                 floatValues.Clear();
             }
+
             Console.WriteLine("");
         }
+
         //returns column by its name.
         public List<float> GetColumn(string key)
         {
-            if(csvMap.ContainsKey(key))
-                return csvMap[key];
-            return new List<float>();
+            return _csvMap.ContainsKey(key) ? _csvMap[key] : new List<float>();
         }
+
         //returns the column size.
         public int GetColumnSize()
         {
             return _columnsSize;
         }
+
         //returns row size.
         public int GetRowSize()
         {
             return _rowsSize;
         }
+
         //returns all the Features
         public List<string> GetFeatures()
         {
-            return featuresList;
+            return _featuresList;
         }
     }
 }

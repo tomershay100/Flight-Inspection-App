@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
 namespace DesktopApp
@@ -9,135 +10,137 @@ namespace DesktopApp
     public class AnomalyData : INotifyPropertyChanged
     {
         private TimeSeries _test; //the test TimeSeries fight file to run.
-        private SimpleAnomalyDetector detector; //the AnomalyDetector that learn the flight.
+        private readonly SimpleAnomalyDetector _detector; //the AnomalyDetector that learn the flight.
         private List<DataPoint> _currentDataPoints; //list of the current column Points.
+
         public List<DataPoint> _CurrentDataPoints
         {
-            get
-            {
-                return _currentDataPoints;
-            }
-            set
+            get => _currentDataPoints;
+            private set
             {
                 _currentDataPoints = value;
                 NotifyPropertyChanged("_CurrentDataPoints");
             }
         }
+
         private List<DataPoint> _correlatedDataPoints; //list of the most correlated column Points.
+
         public List<DataPoint> _CorrelatedDataPoints
         {
-            get
-            {
-                return _correlatedDataPoints;
-            }
-            set
+            get => _correlatedDataPoints;
+            private set
             {
                 _correlatedDataPoints = value;
                 NotifyPropertyChanged("_CorrelatedDataPoints");
             }
         }
+
         private List<DataPoint> _multiDataPoints; //list of the current column and the most correlative column Points.
+
         public List<DataPoint> _MultiDataPoints
         {
-            get
-            {
-                return _multiDataPoints;
-            }
-            set
+            get => _multiDataPoints;
+            private set
             {
                 _multiDataPoints = value;
                 NotifyPropertyChanged("_MultiDataPoints");
             }
         }
-        private List<DataPoint> _lastMultiDataPoints; //list of the 10 last current column and the most correlative column Points.
+
+        private List<DataPoint>
+            _lastMultiDataPoints; //list of the 10 last current column and the most correlative column Points.
+
         public List<DataPoint> _LastMultiDataPoints
         {
-            get
-            {
-                return _lastMultiDataPoints;
-            }
-            set
+            get => _lastMultiDataPoints;
+            private set
             {
                 _lastMultiDataPoints = value;
                 NotifyPropertyChanged("_LastMultiDataPoints");
             }
         }
+
         private List<DataPoint> _linearReg; //list of 2 points declaring the regression line.
+
         public List<DataPoint> _LinearReg
         {
-            get
-            {
-                return _linearReg;
-            }
-            set
+            get => _linearReg;
+            private set
             {
                 _linearReg = value;
                 NotifyPropertyChanged("_LinearReg");
             }
         }
+
         private string _currColumn; //the current selected column.
-        public string _Curr_column
+
+        public string _CurrColumn
         {
-            get { return _currColumn; }
+            get => _currColumn;
             set
             {
                 _currColumn = value;
-                _Correlated_column = MostCorrelative(value);
+                _CorrelatedColumn = MostCorrelative(value);
                 UpdateCurrList();
-                updateMultiList();
+                UpdateMultiList();
                 UpdateLine();
                 if (_dllPath != "")
                     Draw();
-                NotifyPropertyChanged("_Curr_Column");
+                NotifyPropertyChanged("_CurrColumn");
             }
         }
+
         private string _correlatedColumn; //the current correlated column.
-        public string _Correlated_column
+
+        public string _CorrelatedColumn
         {
-            get { return _correlatedColumn; }
+            get => _correlatedColumn;
             set
             {
                 _correlatedColumn = value;
                 UpdateCorrelatedList();
-                NotifyPropertyChanged("_Correlated_column");
+                NotifyPropertyChanged("_CorrelatedColumn");
             }
         }
+
         private int _currIndex; //the line number that currently being sent.
-        public int _Num_line
+
+        public int _NumLine
         {
-            get { return _currIndex; }
+            get => _currIndex;
             set
             {
                 _currIndex = value;
                 UpdateCurrList();
                 UpdateCorrelatedList();
-                updateMultiList();
+                UpdateMultiList();
                 UpdateLine();
                 UpdateJoystickCurrFeatures();
-                NotifyPropertyChanged("_Num_line");
+                NotifyPropertyChanged("_NumLine");
             }
         }
-        private List<string> allFeatures; //list of all the XML features.
+
+        private List<string> _allFeatures; //list of all the XML features.
+
         public List<string> _AllFeatures
         {
-            get
+            get => _allFeatures;
+            private set
             {
-                return allFeatures;
-            }
-            set
-            {
-                allFeatures = new List<string>(value);
+                _allFeatures = new List<string>(value);
                 NotifyPropertyChanged("_AllFeatures");
             }
         }
-        private float minMulti; //the minimum X-value between all the _multiDataPoints.
-        private float maxMulti; //the maximum X-value between all the _multiDataPoints.
+
+        private float _minMulti; //the minimum X-value between all the _multiDataPoints.
+        private float _maxMulti; //the maximum X-value between all the _multiDataPoints.
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         //Constructor
         public AnomalyData(SimpleAnomalyDetector detector)
         {
-            this.detector = detector;
+            _detector = detector;
             _currentDataPoints = new List<DataPoint>();
             _currColumn = "";
             _correlatedDataPoints = new List<DataPoint>();
@@ -147,44 +150,48 @@ namespace DesktopApp
             _linearReg = new List<DataPoint>();
             _dllPath = "";
         }
-        
-        public void NotifyPropertyChanged(string propName)
+
+        private void NotifyPropertyChanged(string propName)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
         //puts all points up to the last point sent in _CurrentDataPoints.
-        public void UpdateCurrList()
+        private void UpdateCurrList()
         {
             List<DataPoint> tmp = new List<DataPoint>();
-            for(int i = 0; i <= _currIndex; i++)
+            for (int i = 0; i <= _currIndex; i++)
             {
                 tmp.Add(new DataPoint(i, GetTestAt(_currColumn, i)));
             }
+
             _CurrentDataPoints = tmp;
         }
+
         //puts all points up to the last point sent in _CorrelatedDataPoints.
-        public void UpdateCorrelatedList()
+        private void UpdateCorrelatedList()
         {
-            List<DataPoint> tmp = new List<DataPoint>();
-            for (int i = 0; i < _currIndex; i++)
+            var tmp = new List<DataPoint>();
+            for (var i = 0; i < _currIndex; i++)
             {
                 tmp.Add(new DataPoint(i, GetTestAt(_correlatedColumn, i)));
             }
+
             _CorrelatedDataPoints = tmp;
         }
+
         /*
          * puts all points up to the last point sent in _MultiDataPoints.
          * put the last 10 Points in _LastMultiDataPoints.
          * initializes the minMulti and the maxMulti values.
          */
-        public void updateMultiList()
+        private void UpdateMultiList()
         {
-            List<DataPoint> tmp = new List<DataPoint>();
-            List<DataPoint> tmp2 = new List<DataPoint>();
+            var tmp = new List<DataPoint>();
+            var tmp2 = new List<DataPoint>();
             double minX = float.MaxValue;
             double maxX = float.MinValue;
-            for (int i =Math.Max(0,_currIndex-300); i < _currIndex; i++)
+            for (var i = Math.Max(0, _currIndex - 300); i < _currIndex; i++)
             {
                 tmp.Add(new DataPoint(GetTestAt(_currColumn, i), GetTestAt(_correlatedColumn, i)));
                 if (GetTestAt(_currColumn, i) > maxX)
@@ -192,95 +199,99 @@ namespace DesktopApp
                 if (GetTestAt(_currColumn, i) < minX)
                     minX = GetTestAt(_currColumn, i);
             }
-            for (int i = Math.Max(0, _currIndex - 10); i <= _currIndex; i++)
+
+            for (var i = Math.Max(0, _currIndex - 10); i <= _currIndex; i++)
             {
                 tmp2.Add(new DataPoint(GetTestAt(_currColumn, i), GetTestAt(_correlatedColumn, i)));
             }
-            minMulti = (float)minX;
-            maxMulti = (float)maxX;
+
+            _minMulti = (float) minX;
+            _maxMulti = (float) maxX;
             _MultiDataPoints = tmp;
             _LastMultiDataPoints = tmp2;
         }
+
         //update the _LinearReg.
-        public void UpdateLine()
+        private void UpdateLine()
         {
-            List<DataPoint> tmp = new List<DataPoint>();
-            tmp.Add(new DataPoint(minMulti, LinearReg(_currColumn, _Correlated_column).f((float)minMulti)));
-            tmp.Add(new DataPoint(maxMulti, LinearReg(_currColumn, _Correlated_column).f((float)maxMulti)));
+            var tmp = new List<DataPoint>
+            {
+                new DataPoint(_minMulti, LinearReg(_currColumn).F(_minMulti)),
+                new DataPoint(_maxMulti, LinearReg(_currColumn).F(_maxMulti))
+            };
             _LinearReg = tmp;
         }
+
         //learn the _test TimeSeries flight file.
         public void Learn()
         {
-            detector.LearnNormal(_test);
-            if (_dllPath != "")
-            {
-                Start();
-                Draw();
-            }
+            _detector.LearnNormal(_test);
+            if (_dllPath == "") return;
+            Start();
+            Draw();
         }
-        //return the _test TimeSeries column value at index.
-        public float GetTestAt(string column, int index)
-        {
-            if (_test != null && _test.GetColumn(column) != null)
-            {
-                try { return _test.GetColumn(column)[index]; }
-                catch (Exception)
-                {
 
-                }
+        //return the _test TimeSeries column value at index.
+        private float GetTestAt(string column, int index)
+        {
+            if (_test?.GetColumn(column) == null) return 0;
+            try
+            {
+                return _test.GetColumn(column)[index];
             }
+            catch (Exception)
+            {
+                // ignored
+            }
+
             return 0;
         }
+
         //return the most correlative feature to the column.
-        public string MostCorrelative(string column)
+        private string MostCorrelative(string column)
         {
-            List<CorrelatedFeatures> cf = detector.GetNormalModel();
-            foreach (CorrelatedFeatures corr in cf)
+            var cf = _detector.GetNormalModel();
+            foreach (var corr in cf.Where(corr => corr.Feature1 == column))
             {
-                if (corr.Feature1 == column)
-                {
-                    return corr.Feature2;
-                }
+                return corr.Feature2;
             }
+
             return "";
         }
+
         //return the regression line of the column (with the most correlative column).
-        public Line LinearReg(string column, string corr)
+        private Line LinearReg(string column)
         {
-            List<CorrelatedFeatures> cf = detector.GetNormalModel();
-            foreach (CorrelatedFeatures c in cf)
+            var cf = _detector.GetNormalModel();
+            foreach (var c in cf.Where(c => c.Feature1 == column))
             {
-                if (c.Feature1 == column)
-                {
-                    return c.LinReg;
-                }
+                return c.LinReg;
             }
+
             return new Line();
         }
+
         //return list of all the Points of the column (with the most correlative column).
-        public List<Point> GetAllPoints(string column, string corr)
+        public List<Point> GetAllPoints(string column)
         {
-            List<CorrelatedFeatures> cf = detector.GetNormalModel();
-            foreach (CorrelatedFeatures c in cf)
+            var cf = _detector.GetNormalModel();
+            foreach (var c in cf.Where(c => c.Feature1 == column))
             {
-                if (c.Feature1 == column)
-                {
-                    return c.AllPoints;
-                }
+                return c.AllPoints;
             }
 
             return new List<Point>();
         }
+
         //analyzes the XML file and initializes the _AllFeatures
-        public void AnalyzeXML(string path)
+        public void AnalyzeXml(string path)
         {
-           _AllFeatures = XmlAnalyzer.Analyzer(path);
+            _AllFeatures = XmlAnalyzer.Analyzer(path);
         }
 
         //Joystick:
         // Joystick features
-        private float _aieleron;
+        private float _aileron;
         private float _elevator;
         private float _rudder;
         private float _throttle;
@@ -293,88 +304,97 @@ namespace DesktopApp
 
         public float _Throttle
         {
-            get { return this._throttle; }
+            get => _throttle;
             set
             {
-                this._throttle = value;
+                _throttle = value;
                 NotifyPropertyChanged("_Throttle");
             }
         }
+
         public float _Rudder
         {
-            get { return this._rudder; }
+            get => _rudder;
             set
             {
-                this._rudder = value;
+                _rudder = value;
                 NotifyPropertyChanged("_Rudder");
             }
         }
+
         public float _Elevator
         {
-            get { return this._elevator; }
+            get => _elevator;
             set
             {
-                this._elevator = value;
+                _elevator = value;
                 NotifyPropertyChanged("_Elevator");
             }
         }
+
         public float _Aileron
         {
-            get { return this._aieleron; }
+            get => _aileron;
             set
             {
-                this._aieleron = value;
+                _aileron = value;
                 NotifyPropertyChanged("_Aileron");
             }
         }
+
         public float _AirSpeed
         {
-            get { return this._airSpeed; }
+            get => _airSpeed;
             set
             {
-                this._airSpeed = value;
+                _airSpeed = value;
                 NotifyPropertyChanged("_AirSpeed");
             }
         }
+
         public float _Roll
         {
-            get { return this._roll; }
+            get => _roll;
             set
             {
-                this._roll = value;
+                _roll = value;
                 NotifyPropertyChanged("_Roll");
             }
         }
+
         public float _Pitch
         {
-            get { return this._pitch; }
+            get => _pitch;
             set
             {
-                this._pitch = value;
+                _pitch = value;
                 NotifyPropertyChanged("_Pitch");
             }
         }
+
         public float _Alimeter
         {
-            get { return this._alimeter; }
+            get => _alimeter;
             set
             {
-                this._alimeter = value;
+                _alimeter = value;
                 NotifyPropertyChanged("_Alimeter");
             }
         }
+
         public float _Yaw
         {
-            get { return this._yaw; }
+            get => _yaw;
             set
             {
-                this._yaw = value;
+                _yaw = value;
                 NotifyPropertyChanged("_Yaw");
             }
         }
+
         public float _Direction
         {
-            get { return this._direction; }
+            get => this._direction;
             set
             {
                 this._direction = value;
@@ -383,7 +403,7 @@ namespace DesktopApp
         }
 
         // lists for Joystick feature 
-        private List<float> _aieleronList;
+        private List<float> _aileronList;
         private List<float> _elevatorList;
         private List<float> _rudderList;
         private List<float> _throttleList;
@@ -393,30 +413,33 @@ namespace DesktopApp
         private List<float> _airSpeedList;
         private List<float> _alimeterList;
 
-        public void UpdateJoystickCurrFeatures()
+        private void UpdateJoystickCurrFeatures()
         {
             try
             {
-                if (_aieleronList != null)
-                    _Aileron = _aieleronList[_Num_line];
+                if (_aileronList != null)
+                    _Aileron = _aileronList[_NumLine];
                 else
                 {
                     _Aileron = 125;
                 }
+
                 if (_elevatorList != null)
-                    _Elevator = _elevatorList[_Num_line];
+                    _Elevator = _elevatorList[_NumLine];
                 else
                 {
                     _Elevator = 125;
                 }
+
                 if (_rudderList != null)
-                    _Rudder = _rudderList[_Num_line];
+                    _Rudder = _rudderList[_NumLine];
                 else
                 {
                     _Rudder = -1;
                 }
+
                 if (_throttleList != null)
-                    _Throttle = _throttleList[_Num_line];
+                    _Throttle = _throttleList[_NumLine];
                 else
                 {
                     _Throttle = 0;
@@ -424,35 +447,39 @@ namespace DesktopApp
 
 
                 if (_airSpeedList != null)
-                    _AirSpeed = _airSpeedList[_Num_line];
+                    _AirSpeed = _airSpeedList[_NumLine];
                 else
                 {
                     _AirSpeed = 0;
                 }
+
                 if (_yawList != null)
                 {
-                    _Yaw = _yawList[_Num_line];
-                    _Direction = _yawList[_Num_line];
+                    _Yaw = _yawList[_NumLine];
+                    _Direction = _yawList[_NumLine];
                 }
                 else
                 {
                     _Yaw = 0;
                     _Direction = 0;
                 }
+
                 if (_pitchList != null)
-                    _Pitch = _pitchList[_Num_line];
+                    _Pitch = _pitchList[_NumLine];
                 else
                 {
                     _Pitch = 0;
                 }
+
                 if (_rollList != null)
-                    _Roll = _rollList[_Num_line];
+                    _Roll = _rollList[_NumLine];
                 else
                 {
                     _Roll = 0;
                 }
+
                 if (_alimeterList != null)
-                    _Alimeter = _alimeterList[_Num_line];
+                    _Alimeter = _alimeterList[_NumLine];
                 else
                 {
                     _Alimeter = 0;
@@ -460,12 +487,13 @@ namespace DesktopApp
             }
             catch (Exception)
             {
-
+                // ignored
             }
         }
-        public void UpdateJoystickFeatures()
+
+        private void UpdateJoystickFeatures()
         {
-            _aieleronList = GetCol("aileron");
+            _aileronList = GetCol("aileron");
             _elevatorList = GetCol("elevator");
             _rudderList = GetCol("rudder");
             _throttleList = GetCol("throttle1");
@@ -477,121 +505,123 @@ namespace DesktopApp
             _rollList = GetCol("roll-deg");
         }
 
-        public List<float> GetCol(string s)
+        private List<float> GetCol(string s)
         {
-            if (_test != null)
-            {
-                return _test.GetColumn(s);
-            }
-            return null;
+            return _test?.GetColumn(s);
         }
+
         //DLL part:
         private string _dllPath; //the dll path.
         private string _trainFile; //the train csv file.
         private string _testFile; //the test csv file.
-        private object _detector; //the DLL's AnomalyManager Object.
+        private object _dllAnomalyManager; //the DLL's AnomalyManager Object.
         private MethodInfo _shapeMethod; //the method that returns the PlotModel
         private MethodInfo _corrMethod; //the method that returns the most correlative according to the DLL.
         private MethodInfo _anomaliesMethod; //the method that returns List of the anomalies.
         private string _dllTitle; //the Title above the DLL's graphs.
+
         public string _DllTitle
         {
-            get
-            {
-                return _dllTitle;
-            }
-            set
+            get => _dllTitle;
+            private set
             {
                 _dllTitle = value;
                 NotifyPropertyChanged("_DllTitle");
             }
         }
+
         private PlotModel _dllPlotModel; //the DLL's PlotModel.
+
         public PlotModel _DllPlotModel
         {
-            get
-            {
-                return _dllPlotModel;
-            }
-            set
+            get => _dllPlotModel;
+            private set
             {
                 _dllPlotModel = value;
                 NotifyPropertyChanged("_DllPlotModel");
             }
         }
-        private List<int> _dllAnomaiesLines; //list of the lines of the anomalies.
-        private List<string> _dllAnomaiesList; //list of the strings of the anomalies.
-        public List<string> _DllAnomaiesList
+
+        private List<int> _dllAnomaliesLines; //list of the lines of the anomalies.
+        private List<string> _dllAnomaliesList; //list of the strings of the anomalies.
+
+        public List<string> _DllAnomaliesList
         {
-            get
+            get => _dllAnomaliesList;
+            private set
             {
-                return _dllAnomaiesList;
-            }
-            set
-            {
-                _dllAnomaiesList = value;
-                NotifyPropertyChanged("_DllAnomaiesList");
+                _dllAnomaliesList = value;
+                NotifyPropertyChanged("_DllAnomaliesList");
             }
         }
+
         //set the DLL's path.
         public void PathSetter(string path)
         {
             _dllPath = path;
         }
+
         //upload the train file.
         public void UploadTrain(string file)
-        { 
+        {
             _trainFile = file;
         }
+
         //upload the test file and create the TimeSeries test.
         public void UploadTest(string file)
-        { 
+        {
             _test = new TimeSeries(file);
             _testFile = file;
             UpdateJoystickFeatures();
         }
+
         //load th DLL, learn and detect the train and test files.
         public void Start()
         {
             var assembly = Assembly.LoadFile(_dllPath);
 
-            string Namespace = _dllPath.Split('\\')[^1].Split('.')[0];
+            var @namespace = _dllPath.Split('\\')[^1].Split('.')[0];
 
-            var type = assembly.GetType(Namespace + ".AnomalyManager");
-            _detector = Activator.CreateInstance(type);
+            var type = assembly.GetType(@namespace + ".AnomalyManager");
+            _dllAnomalyManager = Activator.CreateInstance(type!);
 
             var uploadTrain = type.GetMethod("UploadTrain");
-            uploadTrain.Invoke(_detector, new object[] { _trainFile });
+            uploadTrain?.Invoke(_dllAnomalyManager, new object[] {_trainFile});
             var uploadTest = type.GetMethod("UploadTest");
-            uploadTest.Invoke(_detector, new object[] { _testFile });
+            uploadTest?.Invoke(_dllAnomalyManager, new object[] {_testFile});
 
             var learn = type.GetMethod("Learn");
-            learn.Invoke(_detector, new object[] { });
+            learn?.Invoke(_dllAnomalyManager, new object[] { });
 
             var detect = type.GetMethod("Detect");
-            detect.Invoke(_detector, new object[] { });
+            detect?.Invoke(_dllAnomalyManager, new object[] { });
 
             _shapeMethod = type.GetMethod("GetShape");
             _corrMethod = type.GetMethod("GetCorrelated");
             _anomaliesMethod = type.GetMethod("GetAnomalies");
         }
-        //set the _DllPlotModel, the _DllTitle and the _DllAnomaiesList.
+
+        //set the _DllPlotModel, the _DllTitle and the _DllAnomaliesList.
         public void Draw()
         {
             //PlotModel tmp = (PlotModel)_shapeMethod.Invoke(_detector, new object[] { _currColumn });
             _DllPlotModel = null;
             GC.Collect();
-            _DllPlotModel = (PlotModel)_shapeMethod.Invoke(_detector, new object[] { _currColumn });
-            _DllTitle = "\"" + _currColumn + "\" is most correlative to: \"" + (string)_corrMethod.Invoke(_detector, new object[] { _currColumn }) + "\"\n according to the train flight";
+            _DllPlotModel = (PlotModel) _shapeMethod.Invoke(_dllAnomalyManager, new object[] {_currColumn});
+            _DllTitle = "\"" + _currColumn + "\" is most correlative to: \"" +
+                        (string) _corrMethod.Invoke(_dllAnomalyManager, new object[] {_currColumn}) +
+                        "\"\n according to the train flight";
 
-            Tuple<List<string>, List<int>> tuple = ((Tuple<List<string>, List<int>>)_anomaliesMethod.Invoke(_detector, new object[] { _currColumn }));
-            _DllAnomaiesList = tuple.Item1;
-            _dllAnomaiesLines = tuple.Item2;
+            var tuple = ((Tuple<List<string>, List<int>>) _anomaliesMethod.Invoke(_dllAnomalyManager,
+                new object[] {_currColumn}));
+            _DllAnomaliesList = tuple?.Item1;
+            _dllAnomaliesLines = tuple?.Item2;
         }
+
         //return the line of the anomaly string.
         public int GetTimeStepFromString(string anomaly)
         {
-            return _dllAnomaiesLines[_dllAnomaiesList.IndexOf(anomaly)];
+            return _dllAnomaliesLines[_dllAnomaliesList.IndexOf(anomaly)];
         }
     }
 }

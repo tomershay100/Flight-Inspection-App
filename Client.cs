@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
 using System.Net.Sockets;
 using System.Threading;
-using System.Windows.Media.Animation;
 using System.Windows;
-using System.Windows.Shapes;
-using System.Windows.Markup;
 using System.ComponentModel;
 
 namespace DesktopApp
@@ -16,19 +9,19 @@ namespace DesktopApp
     //Client class
     public class Client
     {
-        protected int _port;
-        protected TcpClient _client;
-        protected NetworkStream _stream;
-        protected bool isRunning = false;
+        private int _port;
+        protected readonly TcpClient TcpClient;
+        protected readonly NetworkStream Stream;
+        protected bool IsRunning = false;
 
-        public Client(int port)
+        protected Client(int port)
         {
             _port = port;
             try
             {
-                _client = new TcpClient("127.0.0.1", port);
-                _stream = _client.GetStream();
-                isRunning = true;
+                TcpClient = new TcpClient("127.0.0.1", port);
+                Stream = TcpClient.GetStream();
+                IsRunning = true;
             }
             catch (Exception)
             {
@@ -36,58 +29,63 @@ namespace DesktopApp
             }
         }
     }
+
     //connect to the FlightGear app
     public class FlightGearClient : Client, INotifyPropertyChanged
     {
-        protected double _sendSpeed;
+        protected double SendSpeed;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int _num_line; //the line number that currently being sent.
-        public int _Num_line
+        private int _numLine; //the line number that currently being sent.
+
+        public int _NumLine
         {
-            get { return _num_line; }
+            get => _numLine;
             set
             {
                 //m.WaitOne();
-                _num_line = value;
+                _numLine = value;
                 //m.ReleaseMutex();
                 NotifyPropertyChanged("_Num_line");
             }
         }
-        public static Mutex m = new Mutex();
+
+        protected static readonly Mutex M = new Mutex();
+
         //Constructor
-        public FlightGearClient() : base(5400)
+        protected FlightGearClient() : base(5400)
         {
-            _sendSpeed = 10;
-            _Num_line = 0;
+            SendSpeed = 10;
+            _NumLine = 0;
         }
+
         //Constructor
-        public FlightGearClient(int port) : base(port)
+        protected FlightGearClient(int port) : base(port)
         {
-            _sendSpeed = 10;
-            _Num_line = 0;
+            SendSpeed = 10;
+            _NumLine = 0;
         }
-        //Distructor
+
+        //Destructor
         ~FlightGearClient()
         {
-            if (isRunning)
-            {
-                // Close socket.
-                _stream.Close();
-                _client.Close();
-            }
+            if (!IsRunning) return;
+            // Close socket.
+            Stream.Close();
+            TcpClient.Close();
         }
+
         //Sets the sending speed.
         public void SetSpeed(double d)
         {
-            m.WaitOne();
-            this._sendSpeed = d;
-            m.ReleaseMutex();
+            M.WaitOne();
+            SendSpeed = d;
+            M.ReleaseMutex();
         }
-        public void NotifyPropertyChanged(string propName)
+
+        protected void NotifyPropertyChanged(string propName)
         {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

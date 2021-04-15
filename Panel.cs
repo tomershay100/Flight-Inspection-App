@@ -3,79 +3,75 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Net.Sockets;
 using System.Threading;
-using System.Windows.Media.Animation;
-using System.Windows;
-using System.Windows.Shapes;
-using System.ComponentModel;
 
 namespace DesktopApp
 {
     //Panel Class (Model)
     public class Panel : FlightGearClient
     {
-        private static EventWaitHandle wait = new ManualResetEvent(initialState: true);
+        private static readonly EventWaitHandle Wait = new ManualResetEvent(initialState: true);
         private int _linesN; //number of rows.
-        private IEnumerable<string> lines;
-        public void setPath(string path)
+        private IEnumerable<string> _lines;
+        public void SetPath(string path)
         {
-            lines = File.ReadLines(path);
-            m.WaitOne();
-            _LinesN = lines.Count();
-            m.ReleaseMutex();
-            _Num_line = 0;
+            _lines = File.ReadLines(path);
+            M.WaitOne();
+            _LinesN = _lines.Count();
+            M.ReleaseMutex();
+            _NumLine = 0;
         }
         public int _LinesN
         {
-            get { return _linesN; }
+            get => _linesN;
             set
             {
                 _linesN = value;
                 NotifyPropertyChanged("_LinesN");
             }
         }
-        private bool needToClose;
+        private bool _needToClose;
         //Constructor
-        public Panel() : base()
+        public Panel()
         {
-            needToClose = false;
+            _needToClose = false;
             _LinesN = 500;
         }
         //Constructor
         public Panel(int port) : base(port)
         {
-            needToClose = false;
+            _needToClose = false;
             _linesN = 500;
         }
         //send the csv file line-by-line to the FlightGear server.
         public void CSV_Sender(string path)
         {
             try {
-                lines = File.ReadLines(path);
-                m.WaitOne();
+                _lines = File.ReadLines(path);
+                M.WaitOne();
+                var lines = _lines.ToList();
                 _LinesN = lines.Count();
-                m.ReleaseMutex();
+                M.ReleaseMutex();
 
-                string line = lines.ElementAt(this._Num_line);
-                while (line != null && !needToClose)
+                var line = lines.ElementAt(this._NumLine);
+                while (line != null && !_needToClose)
                 {
-                    Byte[] data = Encoding.ASCII.GetBytes(line + "\r\n");
-                    _stream.Write(data, 0, data.Length);
-                    while (_sendSpeed == 0)
+                    var data = Encoding.ASCII.GetBytes(line + "\r\n");
+                    Stream.Write(data, 0, data.Length);
+                    while (SendSpeed == 0)
                     {
                     }
-                    Thread.Sleep((int)(1000 / this._sendSpeed));
-                    m.WaitOne();
-                    if (_Num_line > _linesN)
+                    Thread.Sleep((int)(1000 / this.SendSpeed));
+                    M.WaitOne();
+                    if (_NumLine > _linesN)
                         Pause();
-                    this._Num_line++;
-                    m.ReleaseMutex();
-                    if (this._Num_line < lines.Count())
+                    this._NumLine++;
+                    M.ReleaseMutex();
+                    if (this._NumLine < lines.Count())
                     {
-                        line = lines.ElementAt(this._Num_line);
+                        line = lines.ElementAt(this._NumLine);
                     }
-                    wait.WaitOne();
+                    Wait.WaitOne();
                 }
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
@@ -83,31 +79,35 @@ namespace DesktopApp
         //Pause the sending.
         public void Pause()
         {
-            if (isRunning)
+            if (IsRunning)
             {
-                wait.Reset();
-                isRunning = false;
+                Wait.Reset();
+                IsRunning = false;
             }
         }
         //Play the sending.
         public void Play()
         {
-            if (!isRunning)
+            if (!IsRunning)
             {
-                wait.Set();
-                isRunning = true;
+                Wait.Set();
+                IsRunning = true;
             }
         }
         public void Close()
         {
-            isRunning = false;
+            IsRunning = false;
             try
             {
-                _stream.Close();
-                _client.Close();
+                Stream.Close();
+                TcpClient.Close();
             }
-            catch (Exception) { }
-            needToClose = true;
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            _needToClose = true;
         }
     }
 }

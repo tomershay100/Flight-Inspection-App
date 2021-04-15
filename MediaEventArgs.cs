@@ -1,61 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DesktopApp
 {
-    public class MediaEventArgs: EventArgs
+    public class MediaEventArgs : EventArgs
     {
-        private string _description;
-        private double _value;
+        private readonly string _description;
+        private readonly double _value;
 
-        public MediaEventArgs(string s): base()
+        public MediaEventArgs(string s)
         {
             _description = s;
             _value = 0;
         }
 
-        public MediaEventArgs(string s, double val) : base()
+        public MediaEventArgs(string s, double val)
         {
             _description = s;
             _value = val;
         }
 
-        public string getDescription()
+        public string GetDescription()
         {
             return _description;
         }
 
-        public double getValue()
+        public double GetValue()
         {
             return _value;
         }
     }
+
     public class GraphEventArgs : EventArgs
     {
-        private string _description;
-        private string _value;
+        private readonly string _description;
+        private readonly string _value;
 
-        public GraphEventArgs(string s) : base()
+        public GraphEventArgs(string s)
         {
             _description = s;
             _value = "";
         }
 
-        public GraphEventArgs(string s, string val) : base()
+        public GraphEventArgs(string s, string val)
         {
             _description = s;
             _value = val;
         }
 
-        public string getDescription()
+        public string GetDescription()
         {
             return _description;
         }
 
-        public string getValue()
+        public string GetValue()
         {
             return _value;
         }

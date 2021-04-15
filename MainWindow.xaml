@@ -3,99 +3,97 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DesktopApp"
         mc:Ignorable="d"
-        xmlns:Controls="clr-namespace:DesktopApp.UserControls"
+        xmlns:controls="clr-namespace:DesktopApp.UserControls"
         Title="MainWindow" Height="694" Width="927" Closing="exit_Click">
     <Grid>
 
         <TabControl Margin="0,0,0,10">
-            <TabItem Header = "Main">
+            <TabItem Header="Main">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="153*"/>
+                        <ColumnDefinition Width="153*" />
                         <ColumnDefinition Width="154*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="183*" />
-                        <RowDefinition Height="31*"/>
+                        <RowDefinition Height="31*" />
                         <RowDefinition Height="64*" />
                     </Grid.RowDefinitions>
-                    <Controls:Joystick x:Name="Joystick" Visibility="Visible" Grid.Column="0" Grid.Row="0" Margin="10,0,0,72" Grid.RowSpan="2"/>
-                    <Controls:MediaControls x:Name="playback" Grid.Column="0" Grid.Row="2" Visibility="Visible" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,21,10,0" Height="120"/>
-                    <Controls:Gauges x:Name="gauges" VerticalAlignment="Center" Grid.Row="0" Margin="456,0,16,0" Grid.RowSpan="2" Height="500" Grid.ColumnSpan="2"/>
-                    <Button x:Name="CSVFileTrain" Grid.Row="1" Visibility="Hidden" Content="Upload CSV Train File" HorizontalAlignment="Center" Height="52" VerticalAlignment="Center" Width="128" Command ="{Binding VM_ClickCommand}" Click="CSVTarinFile_Click"/>
-                    <!--<TextBox x:Name="speedText" Visibility="Hidden" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Height="21" Margin="606,253,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="43" TextAlignment="Center" RenderTransformOrigin="-2.806,0.778"/>
-        <Button x:Name="submit" Content="Submit" Visibility="Hidden" HorizontalAlignment="Left" Margin="654,253,0,0" VerticalAlignment="Top" Width="52" Height="21" Click="submit_Click"/>
-        <Label x:Name="speedError" Content="" HorizontalAlignment="Left" Margin="607,279,0,0" VerticalAlignment="Top" FontWeight="Bold" Width="99" Height="32"/>
-        -->
-                    <Button x:Name="XMLFile" Grid.Row="1" Content="Upload XML File" HorizontalAlignment="Left" Height="52" Margin="10,0,0,0" VerticalAlignment="Center" Width="128" Click="XmlButtonClick" RenderTransformOrigin="-3.066,0.374" />
-                    <Button x:Name="CSVFileTest" Grid.Row="1" Visibility="Hidden" Content="Upload CSV Test File" HorizontalAlignment="Left" Height="52" VerticalAlignment="Center" Width="128" Command ="{Binding VM_ClickCommand}" Click="CSVFileTest_Click" Margin="321,0,0,0"/>
-                    <Slider x:Name="sliderRudder" HorizontalAlignment="Left" Value ="{Binding VM_Rudder}" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" Visibility="Visible" IsMoveToPointEnabled="False" Height="46" Margin="91,362,0,0" VerticalAlignment="Top" Width="287" RenderTransformOrigin="0.492,0.489" Minimum="-1" Maximum="1"/>
-                    <Slider x:Name="sliderThrottle" HorizontalAlignment="Left" Value ="{Binding VM_Throttle}" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True" Visibility="Visible" IsMoveToPointEnabled="False" Height="46" Margin="-78,197,0,0" VerticalAlignment="Top" Width="287" RenderTransformOrigin="0.492,0.489" Minimum="0" Maximum="1">
+                    <controls:Joystick x:Name="Joystick" Visibility="Visible" Grid.Column="0" Grid.Row="0"
+                                       Margin="10,0,0,72" Grid.RowSpan="2" />
+                    <controls:MediaControls x:Name="Playback" Grid.Column="0" Grid.Row="2" Visibility="Visible"
+                                            VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,21,10,0" Height="120" />
+                    <controls:Gauges x:Name="Gauges" VerticalAlignment="Center" Grid.Row="0" Margin="456,0,16,0"
+                                     Grid.RowSpan="2" Height="500" Grid.ColumnSpan="2"
+                                     Grid.Column="0" />
+                    <Button x:Name="CsvFileTrain" Grid.Row="1" Grid.Column="0" Visibility="Hidden"
+                            Content="Upload CSV Train File" HorizontalAlignment="Center" Height="52"
+                            VerticalAlignment="Center" Width="128"
+                            Click="CSVTrainFile_Click" />
+
+                    <Button x:Name="XmlFile" Grid.Row="1" Grid.Column="0" Content="Upload XML File"
+                            HorizontalAlignment="Left" Height="52" Margin="10,0,0,0" VerticalAlignment="Center"
+                            Width="128" Click="XmlButtonClick" RenderTransformOrigin="-3.066,0.374" />
+                    <Button x:Name="CsvFileTest" Grid.Row="1" Grid.Column="0" Visibility="Hidden"
+                            Content="Upload CSV Test File" HorizontalAlignment="Left" Height="52"
+                            VerticalAlignment="Center" Width="128"
+                            Click="CSVFileTest_Click" Margin="321,0,0,0" />
+                    <Slider Grid.Row="0" Grid.Column="0" x:Name="SliderRudder" HorizontalAlignment="Left"
+                            Value="{Binding VM_Rudder}" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True"
+                            Visibility="Visible" IsMoveToPointEnabled="False" Height="46" Margin="91,362,0,0"
+                            VerticalAlignment="Top" Width="287" RenderTransformOrigin="0.492,0.489" Minimum="-1"
+                            Maximum="1" />
+                    <Slider Grid.Row="0" Grid.Column="0" x:Name="SliderThrottle" HorizontalAlignment="Left"
+                            Value="{Binding VM_Throttle}" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="True"
+                            Visibility="Visible" IsMoveToPointEnabled="False" Height="46" Margin="-78,197,0,0"
+                            VerticalAlignment="Top" Width="287" RenderTransformOrigin="0.492,0.489" Minimum="0"
+                            Maximum="1">
                         <Slider.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="90.069"/>
-                                <TranslateTransform/>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="90.069" />
+                                <TranslateTransform />
                             </TransformGroup>
                         </Slider.RenderTransform>
                     </Slider>
-                    <Label x:Name="throttleLable" Content="throttle" Visibility="Visible" HorizontalAlignment="Left" Height="84" Margin="-6,183,0,0" VerticalAlignment="Top" Width="150" FontSize="24" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
+                    <Label Grid.Row="0" Grid.Column="0" x:Name="ThrottleLabel" Content="throttle" Visibility="Visible"
+                           HorizontalAlignment="Left" Height="84" Margin="-6,183,0,0" VerticalAlignment="Top"
+                           Width="150" FontSize="24" FontWeight="Bold" RenderTransformOrigin="0.5,0.5">
                         <Label.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="-90.543"/>
-                                <TranslateTransform/>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-90.543" />
+                                <TranslateTransform />
                             </TransformGroup>
                         </Label.RenderTransform>
                         <Label.ContextMenu>
-                            <ContextMenu FontSize="50" FontWeight="Bold"/>
+                            <ContextMenu FontSize="50" FontWeight="Bold" />
                         </Label.ContextMenu>
                     </Label>
-                    <Label x:Name="rudderLable" Content="rudder" Visibility="Visible" HorizontalAlignment="Left" Height="41" Margin="183,369,0,0" VerticalAlignment="Top" Width="150" FontSize="24" FontWeight="Bold" RenderTransformOrigin="0.5,0.5" Grid.Column="0">
+                    <Label x:Name="RudderLabel" Content="rudder" Visibility="Visible" HorizontalAlignment="Left"
+                           Height="41" Margin="183,369,0,0" VerticalAlignment="Top" Width="150" FontSize="24"
+                           FontWeight="Bold" RenderTransformOrigin="0.5,0.5"
+                           Grid.Row="0" Grid.Column="0">
                         <Label.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="-0.636"/>
-                                <TranslateTransform/>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="-0.636" />
+                                <TranslateTransform />
                             </TransformGroup>
                         </Label.RenderTransform>
                         <Label.ContextMenu>
-                            <ContextMenu FontSize="50" FontWeight="Bold"/>
+                            <ContextMenu FontSize="50" FontWeight="Bold" />
                         </Label.ContextMenu>
                     </Label>
                 </Grid>
             </TabItem>
-            <TabItem Name="GraphsTab" Header = "Graphs" Visibility="Hidden">
-                <Controls:GraphsUC x:Name="Graphs" Visibility="Visible"/>
+            <TabItem Name="GraphsTab" Header="Graphs" Visibility="Hidden">
+                <controls:GraphsUc x:Name="Graphs" Visibility="Visible" />
             </TabItem>
         </TabControl>
-        <!--<Button x:Name = "exit" HorizontalAlignment="Left" Height="25" Margin="885,0,0,0" VerticalAlignment="Top" Width="25" Background="Transparent" BorderBrush="Transparent" Click="exit_Click" Grid.Row="0" >
-            <Image Source="pack://application:,,,/Resources/turnOffButton.png"/>
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Background" Value="LightBlue" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="40">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#AAC9CE" TargetName="Border"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-        </Button>-->
-
     </Grid>
 </Window>
