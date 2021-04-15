@@ -7,13 +7,14 @@
 * Amit Sharabi
 
 This is a desktop application for flight anomalies detection.
-* [General](#General)
-  - [Background](#background)
-  - [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
-  - [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
-  - [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
-* [Dependencies](#dependencies)  
-* [Installation](#installation)
+
+1. [General](#General)
+    - [Background](#background)
+    - [Project Description](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-description)
+    - [Project Stucture](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#project-stucture)
+    - [Features](https://github.com/tomershay100/Flight-Inspection-App/blob/main/README.md#features)
+2. [Dependencies](#dependencies)  
+3. [Installation](#installation)
 
 ## General
 ### Background
@@ -67,14 +68,26 @@ For more features explanations, you can watch [this video](https://youtu.be/t_-B
 You can create annomly detection DLL according to the following API:
 * The DLLs' namespace must have the same name as the DLLs' name.
 * The Object that in charges of the anomalies must be called AnomalyManager and its class must contain the following functions:
- ```c#
- public AnomalyManager(); // Constructor to AnomalyManager.
- public void UploadTrain(string file); // Uploads the normal flight.
- public void UploadTest(string file); // Uploads the test flight.
- public void Learn(); // Learns the normal flight.
- public void Detect(); // Detect anomalies from the test flight.
- public PlotModel GetShape(string _currColumn, string _Correlated_column); // Returns a PlotModel that emphasizes the anomalies points in a relation to your detection algorithm.
- ```
+```c#
+public class AnomalyManager() {
+
+    public AnomalyManager(); // Constructor to AnomalyManager class.
+
+    public void UploadTrain(string file); // Uploads the normal flight.
+
+    public void UploadTest(string file); // Uploads the test flight.
+
+    public void Learn(); // Learns the normal flight.
+
+    public void Detect(); // Detect anomalies from the test flight.
+
+    public OxyPlot.PlotModel GetShape(string _currColumn); // Returns a PlotModel that emphasizes the anomalies points in a relation to your detection algorithm.
+  
+    public string GetCorrelated(string _currColumn); // Returns the most correlative column according to the algorithm.
+  
+    public Tuple<List<string>, List<int>> GetAnomalies(string _currColumn); // Returns a Tuple of Lists. The first will be the descriptions of the anomalies and the second will be the line numbers of the anomalies.
+}
+```
 ## Dependencies
 1. [FlightGear](https://www.flightgear.org/download/)
 2. [.NET 5.0](https://dotnet.microsoft.com/download/dotnet-framework/net48)
