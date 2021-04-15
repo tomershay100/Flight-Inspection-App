@@ -34,7 +34,7 @@ namespace DesktopApp.UserControls
             e.Handled = regex1.IsMatch(e.Text);
         }
 
-        public double clickSubmit(string speedText)
+        public double ClickSubmit(string speedText)
         {
             double d;
             bool flag = double.TryParse(speedText, out d);
@@ -54,7 +54,7 @@ namespace DesktopApp.UserControls
             {
                 try
                 {
-                    Notify(this, new MediaEventArgs("submit", clickSubmit(speedText.Text)));
+                    Notify(this, new MediaEventArgs("submit", ClickSubmit(SpeedText.Text)));
                 }
                 catch (Exception)
                 {
