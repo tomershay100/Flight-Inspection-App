@@ -67,6 +67,7 @@ namespace DesktopApp
             if (result != MessageBoxResult.Yes)
             {
                 e.Cancel = true;
+                return;
             }
 
             _vmPanel.CloseAll();
